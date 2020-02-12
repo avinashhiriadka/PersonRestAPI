@@ -1,6 +1,7 @@
 package com.embl.restapi.person.controller;
 
 import com.embl.restapi.person.domain.Person;
+import com.embl.restapi.person.domain.PersonList;
 import com.embl.restapi.person.service.IPersonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,29 +23,84 @@ class PersonController {
         this.personService = service;
     }
 
-    @GetMapping(value = "/")
-    public List<Person> findAll(){
-        return (List<Person>) personService.findAll();
-    }
-
     @PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public String add(@RequestBody String personList){
+    public String add(@RequestBody String requestData){
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Person> persons;
+        PersonList personList;
         try {
-                persons = objectMapper.readValue(personList, new TypeReference<List<Person>>() {
-            });
+                personList = objectMapper.readValue(requestData, PersonList.class);
+
+            List<Person> persons = personList.getPersons();
+            if(persons != null){
+                persons.forEach(person -> {personService.add(person);});
+                return objectMapper.writeValueAsString(persons);
+            }
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return "Exception processing JSON string";
         }
-        if(personList != null){
-            persons.forEach(person -> {personService.add(person);});
-            return persons.toString();
-        }
+
         return "input string is null";
     }
 
+    @GetMapping(value = "findAll", produces = "application/string")
+    @ResponseStatus(HttpStatus.OK)
+    public String findAll(){
+        List<Person> persons = (List<Person>) personService.findAll();
+
+        StringBuffer buffer = new StringBuffer();
+        persons.forEach(person -> {buffer.append(person.toString()+ "\n");});
+        return buffer.toString();
+    }
+
+
+    @PostMapping(value = "delete", consumes= "application/json",produces = "application/string")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String delete(@RequestBody String requestData){
+        ObjectMapper objectMapper = new ObjectMapper();
+        PersonList personList;
+        try {
+            personList = objectMapper.readValue(requestData, PersonList.class);
+
+            List<Person> persons = personList.getPersons();
+            if(persons != null){
+                persons.forEach(person -> {personService.delete(person);});
+                StringBuffer buffer = new StringBuffer();
+                persons.forEach(person -> {buffer.append(person.toString()+ "\n");});
+                return buffer.toString();
+            }
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "Exception processing JSON string";
+        }
+
+        return "input string is null";
+    }
+
+    @PostMapping(value = "update", consumes= "application/json",produces = "application/string")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String update(@RequestBody String requestData){
+        ObjectMapper objectMapper = new ObjectMapper();
+        PersonList personList;
+        try {
+            personList = objectMapper.readValue(requestData, PersonList.class);
+
+            List<Person> persons = personList.getPersons();
+            if(persons != null){
+                persons.forEach(person -> {personService.update(person);});
+                StringBuffer buffer = new StringBuffer();
+                persons.forEach(person -> {buffer.append(person.toString()+ "\n");});
+                return buffer.toString();
+            }
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "Exception processing JSON string";
+        }
+
+        return "input string is null";
+    }
 }

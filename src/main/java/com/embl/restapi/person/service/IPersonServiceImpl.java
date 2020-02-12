@@ -25,11 +25,13 @@ private PersonRepository personRepository;
 
     @Override
     public void update(Person person) {
-        personRepository.findByLastName(person.getLastName());
+        Person person_old = personRepository.findByName(person.getFirstName(),person.getLastName());
+        person.setId(person_old.getId());
+        personRepository.save(person);
     }
 
     @Override
-    public boolean delete(Person person) {
-        return false;
+    public void delete(Person person) {
+        personRepository.delete(person);
     }
 }

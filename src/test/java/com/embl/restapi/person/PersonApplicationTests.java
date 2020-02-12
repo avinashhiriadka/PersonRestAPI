@@ -15,7 +15,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+//@SpringBootTest
 @DataJpaTest
 class PersonApplicationTests {
 
@@ -25,7 +25,7 @@ class PersonApplicationTests {
 	@Test
 	public void whenFindingCustomerByLastName_thenCorrect() {
 		personRepository.save(new Person("John", "Miller", 39));
-		assertThat(personRepository.findByLastName("Miller")).isInstanceOf(Optional.class);
+		assertThat(personRepository.findByLastName("Miller")).isInstanceOf(Person.class);
 	}
 
 	@Test

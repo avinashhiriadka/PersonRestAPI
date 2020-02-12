@@ -6,6 +6,6 @@ public interface IPersonService {
 Iterable<Person> findAll();
 void add(Person person);
 void update(Person person);
-boolean delete(Person person);
+void delete(Person person);
 
 }

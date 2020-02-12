@@ -1,6 +1,6 @@
 package com.embl.restapi.person.domain;
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -8,28 +8,28 @@ import java.util.List;
 
 @Entity
 @Table(name="Person")
+@Access(value=AccessType.PROPERTY)
 public class Person {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+  //  private static final long serialVersionUID = 1L;
+
     private Long id;
 
-    @NotEmpty
-    @Column(name="first_name")
+    @JsonProperty("first_name")
     private String firstName;
 
-    @NotEmpty
-    @Column(name="last_name")
+    @JsonProperty("last_name")
     private String lastName;
 
-    @NotEmpty
-    @Column(name="age")
+    @JsonProperty("age")
     private Integer age;
 
-    @Column(name="colour")
+    @JsonProperty("favourite_colour")
     private String favouriteColour;
 
-    @ElementCollection
+    @JsonProperty("hobby")
     private List<String> hobbies;
+
+    public Person(){}
 
     public Person(String first, String last, int age) {
         this.firstName = first;
@@ -37,6 +37,9 @@ public class Person {
         this.age = age;
     }
 
+    @Id
+    @Column(name="person_id",unique = true, nullable = false)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -45,42 +48,56 @@ public class Person {
         this.id = id;
     }
 
+    @NotEmpty
+    @Column(name="first_name")
     public String getFirstName() {
         return firstName;
     }
 
+    @JsonProperty("first_name")
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    @NotEmpty
+    @Column(name="last_name")
     public String getLastName() {
         return lastName;
     }
 
+    @JsonProperty("last_name")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+  //  @NotEmpty
+    @Column(name="age")
     public Integer getAge() {
         return age;
     }
 
+    @JsonProperty("age")
     public void setAge(Integer age) {
         this.age = age;
     }
 
+    @Column(name="colour")
     public String getFavouriteColour() {
         return favouriteColour;
     }
 
+    @JsonProperty("favourite_colour")
     public void setFavouriteColour(String favouriteColour) {
         this.favouriteColour = favouriteColour;
     }
 
+    @ElementCollection
+    @Column(name="hobbies")
     public List<String> getHobbies() {
         return hobbies;
     }
 
+    @JsonProperty("hobby")
     public void setHobbies(List<String> hobbies) {
         this.hobbies = hobbies;
     }
