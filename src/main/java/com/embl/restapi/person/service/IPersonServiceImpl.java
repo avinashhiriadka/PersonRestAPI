@@ -32,6 +32,8 @@ private PersonRepository personRepository;
 
     @Override
     public void delete(Person person) {
+        Person person_old = personRepository.findByName(person.getFirstName(),person.getLastName());
+        person.setId(person_old.getId());
         personRepository.delete(person);
     }
 }

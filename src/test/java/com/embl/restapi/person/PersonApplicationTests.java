@@ -25,7 +25,7 @@ class PersonApplicationTests {
 	@Test
 	public void whenFindingCustomerByLastName_thenCorrect() {
 		personRepository.save(new Person("John", "Miller", 39));
-		assertThat(personRepository.findByLastName("Miller")).isInstanceOf(Person.class);
+		assertThat(personRepository.findByName("John","Miller")).isInstanceOf(Person.class);
 	}
 
 	@Test
