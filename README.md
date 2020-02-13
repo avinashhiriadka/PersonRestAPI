@@ -6,11 +6,12 @@ The steps for installing and starting this service are given below.
 1. Clone the GIT repo into the server where Java and Maven is installed using the command:
 git clone https://github.com/avinashhiriadka/PersonRestAPI.git
 2. cd PersonRestAPI/
-3. Run the maven command to build the package
+3. set JAVA_HOME path variable to the Java installation directory if not already set
+4. Run the maven command to build the package
 ./mvnw clean package
-4.You should see a build success with 3 tests run and target folder created
-5. Start the Springboot application using the command:
+5.You should see a build success with 3 tests run and target folder created
+6. Start the Springboot application using the command:
 ./mvnw spring-boot:run
-6. This will start the application on port 8080 on the server
+7. This will start the application on port 8080 on the server
 
 
