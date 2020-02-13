@@ -20,7 +20,8 @@ private PersonRepository personRepository;
 
     @Override
     public void add(Person person) {
-        personRepository.save(person);
+        if( personRepository.findByName(person.getFirstName(),person.getLastName()) == null)
+            personRepository.save(person);
     }
 
     @Override
